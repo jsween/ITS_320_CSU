@@ -33,7 +33,7 @@ class Inventory:
 
     @staticmethod
     def __display_update_house_options__():
-        print('Update Home Menu\nEnter the appropriate key to update the attribute.')
+        print('Update Menu\nEnter the appropriate key to update the attribute.')
         print('\t(1): Square Footage.')
         print('\t(2): Address.')
         print('\t(3): City.')
