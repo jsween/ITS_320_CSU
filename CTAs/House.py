@@ -43,7 +43,10 @@ class House:
         self.__state = value
 
     def get_zipcode(self):
-        return self.__zipcode
+        zp = str(self.__zipcode)
+        while len(zp) < 5:  # handle 3,669 zip codes start w/ 0 in US
+            zp = '0' + zp
+        return zp
 
     def set_zipcode(self, value):
         self.__zipcode = value
@@ -55,17 +58,17 @@ class House:
         self.__model_name = value
 
     def get_sale_status(self):
-        return self.__sale_status.title()
+        return self.__sale_status.value.title()
 
     def set_sale_status(self, value):
         self.__sale_status = value
 
     def __str__(self):
         return (f'House ID: {self.id}\n'
-                f'Square Feet: {self.__square_feet}\n'
-                f'Address: {self.__address}\n'
-                f'City: {self.__city}\n'
-                f'State: {self.__state}\n'
-                f'Zip: {self.__zipcode}\n'
-                f'Model name: {self.__model_name}\n'
-                f'Sale status: {self.__sale_status.value.capitalize()}')
+                f'Square Feet: {self.get_square_feet()}\n'
+                f'Address: {self.get_address()}\n'
+                f'City: {self.get_city()}\n'
+                f'State: {self.get_state()}\n'
+                f'Zip: {self.get_zipcode()}\n'
+                f'Model name: {self.get_model_name()}\n'
+                f'Sale status: {self.get_sale_status()}')

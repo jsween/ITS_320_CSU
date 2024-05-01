@@ -57,6 +57,16 @@ class HelperClass:
         except ValueError:
             return False
 
+    @staticmethod
+    def validate_zipcode(zipcode):
+        if len(zipcode) != 5:
+            return False
+        try:
+            int(zipcode)
+            return True
+        except ValueError:
+            return False
+
 
 
 

@@ -43,7 +43,55 @@ class Inventory:
             self.__inventory[index].set_address(user_input)
             print(f'Address successfully updated: {self.__inventory[index].get_address()}')
         else:
-            print(f'Invalid address entered: `{user_input}`. Try again.')
+            print(f'Invalid input entered: `{user_input}`. Try again.')
+
+    def _update_city(self, index):
+        user_input = input('Enter new city: ').strip().lower()
+        if user_input != '':
+            self.__inventory[index].set_city(user_input)
+            print(f'City successfully updated: {self.__inventory[index].get_city()}')
+        else:
+            print(f'Invalid input entered: `{user_input}`. Try again.')
+
+    def _update_state(self, index):
+        user_input = input('Enter new state: ').strip().lower()
+        if user_input != '':
+            self.__inventory[index].set_state(user_input)
+            print(f'State successfully updated: {self.__inventory[index].get_state()}')
+        else:
+            print(f'Invalid input entered: `{user_input}`. Try again.')
+
+    def _update_zipcode(self, index):
+        user_input = input('Enter new zipcode: ')
+        if fhc.validate_zipcode(user_input):
+            self.__inventory[index].set_zipcode(int(user_input))
+            print(f'Zipcode successfully updated: {self.__inventory[index].get_zipcode()}')
+        else:
+            print(f'Invalid zipcode entered: `{user_input}`. Try again.')
+
+    def _update_model_name(self, index):
+        user_input = input('Enter new model name: ').strip().lower()
+        if user_input != '':
+            self.__inventory[index].set_model_name(user_input)
+            print(f'Model name successfully updated: {self.__inventory[index].get_model_name()}')
+        else:
+            print(f'Invalid input entered: `{user_input}`. Try again.')
+
+    def _update_sale_status(self, index):
+        print('Select new status:\n(s): Sold.\n(a): Available.\n(u): Under Contract\n')
+        user_input = input('Enter new sale status: ').strip().lower()
+        if user_input != '' and user_input in ['s', 'a', 'u']:
+            new_status = None
+            if user_input == 's':
+                new_status = SaleStatus.SOLD
+            elif user_input == 'a':
+                new_status = SaleStatus.AVAILABLE
+            else:
+                new_status = SaleStatus.UNDER_CONTRACT
+            self.__inventory[index].set_sale_status(new_status)
+            print(f'Sale status successfully updated: {self.__inventory[index].get_sale_status()}')
+        else:
+            print(f'Invalid input entered: `{user_input}`. Try again.')
 
     @staticmethod
     def _display_update_house_options__():
@@ -68,9 +116,9 @@ class Inventory:
         address = input('Street Address: ').strip()
         city = input('City: ').strip()
         state = input('State: ').strip()
-        zip_code = input('Zipcode (e.g., 97123): ').strip()  # TODO: add error checking for 5 digit int & convert to int
+        zipcode = input('Zipcode (e.g., 97123): ').strip()  # TODO: add error checking for 5 digit int & convert to int
         sale_status = SaleStatus.AVAILABLE
-        new_house = House(model_name, square_feet, address, city, state, zip_code, sale_status)
+        new_house = House(square_feet, address, city, state, zipcode, model_name, sale_status)
         self._add_house_to_inventory(new_house)
         print(self)
 
@@ -105,15 +153,15 @@ class Inventory:
                     elif choice == '2':  # address
                         self._update_address(index)
                     elif choice == '3':  # city
-                        raise NotImplementedError()
+                        self._update_city(index)
                     elif choice == '4':  # state
-                        raise NotImplementedError()
+                        self._update_state(index)
                     elif choice == '5':  # zip
-                        raise NotImplementedError()
+                        self._update_zipcode(index)
                     elif choice == '6':  # model name
-                        raise NotImplementedError()
+                        self._update_model_name(index)
                     elif choice == '7':  # sale status
-                        raise NotImplementedError()
+                        self._update_sale_status(index)
                     else:  # quit
                         print('Exiting to main menu...')
                         done = True
