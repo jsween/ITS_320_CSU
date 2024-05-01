@@ -1,4 +1,5 @@
 from Enums import FileExtension, SaleStatus
+from FinalHelperClass import HelperClass as fhc
 from House import House
 
 
@@ -19,10 +20,6 @@ class Inventory:
     def __remove_house_from_inventory__(self, house):
         self.inventory.remove(house)
 
-    @staticmethod
-    def __get_extension_format(option):
-        return FileExtension.CSV.value if option == 'c' else FileExtension.TXT.value
-
     def __get_inventory__(self):
         return self.inventory
 
@@ -34,14 +31,30 @@ class Inventory:
                 return
         print(f'House ID {id_to_remove} not found. Nothing removed from Inventory.')
 
+    @staticmethod
+    def __display_update_house_options__():
+        print('Update Home Menu\nEnter the appropriate key to update the attribute.')
+        print('\t(1): Square Footage.')
+        print('\t(2): Address.')
+        print('\t(3): City.')
+        print('\t(4): State.')
+        print('\t(5): Zipcode.')
+        print('\t(6): Model Name')
+        print('\t(7): Sale Status')
+        print('\t(q): Exit back to Main Menu.\n')
+
+    @staticmethod
+    def __get_extension_format(option):
+        return FileExtension.CSV.value if option == 'c' else FileExtension.TXT.value
+
     def add_new_house(self):
         print('Adding a new house. Please provide the following information:')
         model_name = input('Model Name: ').strip()  # TODO: for all strings, add method to check if empty
-        square_feet = input('Square feet: ').strip()  # TODO: add error checking for uint and range (50?, 500000?) & convert to int
+        square_feet = input('Square feet rounded to nearest foot (e.g., 1200): ').strip()  # TODO: add error checking for uint and range (50?, 500000?) & convert to int
         address = input('Street Address: ').strip()
         city = input('City: ').strip()
         state = input('State: ').strip()
-        zip_code = input('Zip Code: ').strip()  # TODO: add error checking for 5 digit int & convert to int
+        zip_code = input('Zipcode (e.g., 97123): ').strip()  # TODO: add error checking for 5 digit int & convert to int
         sale_status = SaleStatus.AVAILABLE
         new_house = House(model_name, square_feet, address, city, state, zip_code, sale_status)
         self.__add_house_to_inventory__(new_house)
@@ -55,14 +68,52 @@ class Inventory:
             print('\nWarning: Home Inventory is empty.\n')
 
     def select_house_to_remove_from_inventory(self):
+        if len(self.inventory) > 0:
+            print(f'\nCurrent Inventory: \n{self}\n')
+            house_id = int(input('Enter a house ID to remove: '))  # TODO: add check if 'c' to cancel or if int
+            self.__remove_house_by_id__(house_id)
+        else:
+            print('\nWarning: Inventory is empty. Unable to remove a house.\n')
+
+    def select_house_to_modify(self):
         print(f'\nCurrent Inventory: \n{self}\n')
-        house_id = int(input('Enter a house ID to remove: '))  # TODO: add check if 'c' to cancel or if int
-        self.__remove_house_by_id__(house_id)
+        house_id = int(input('Enter a house ID to modify: '))  # TODO: add check if 'c' to cancel or if int
+        for house in self.inventory:
+            if house.id == house_id:
+                print(f'House Found. Current Attributes:\n{self}\n')
+                index = self.inventory.index(house)
+                done = False
+                while not done:
+                    self.__display_update_house_options__()
+                    choice = input('Enter a choice: ').strip().lower()
+                    if choice == '1':  # square footage
+                        user_input = input('Enter new square footage in nearest whole number:')
+                        valid = fhc.validate_square_footage_valid(user_input)
+                        if valid:
+                            # house.set_square_footage(int(user_input))
+                            self.inventory[index].set_square_feet(int(user_input))
+                        else:
+                            print(f'Invalid square footage entered: {user_input}. Try again.')
+                    elif choice == '2':  # address
+                        raise NotImplementedError()
+                    elif choice == '3':  # city
+                        raise NotImplementedError()
+                    elif choice == '4':  # state
+                        raise NotImplementedError()
+                    elif choice == '5':  # zip
+                        raise NotImplementedError()
+                    elif choice == '6':  # model name
+                        raise NotImplementedError()
+                    elif choice == '7':  # sale status
+                        raise NotImplementedError()
+                    else:  # quit
+                        print('Exiting to main menu...')
+                        done = True
+            else:
+                print(f'House not found. Check if ID {house_id} exists in Inventory.')
 
     def save_inventory_to_text_file(self):
-
         extension_choice = input('Press `c` for csv format or any other key for text format: ').strip().lower()
-
         extension = self.__get_extension_format(extension_choice)
 
         if len(self.inventory) > 0:
