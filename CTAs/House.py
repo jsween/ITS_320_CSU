@@ -13,6 +13,11 @@ class House:
         self.__model_name = model_name
         self.__sale_status = sale_status
 
+    def __eq__(self, other):
+        if isinstance(other, House):
+            return self.id == other.id
+        return False
+
     def get_square_feet(self):
         return self.__square_feet
 
@@ -63,4 +68,4 @@ class House:
                 f'State: {self.__state}\n'
                 f'Zip: {self.__zipcode}\n'
                 f'Model name: {self.__model_name}\n'
-                f'Sale status: {self.__sale_status.value.capitalize()}\n')
+                f'Sale status: {self.__sale_status.value.capitalize()}')
