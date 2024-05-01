@@ -25,19 +25,19 @@ class House:
         self.__square_feet = value
 
     def get_address(self):
-        return self.__address
+        return self.__address.title()
 
     def set_address(self, value):
         self.__address = value
 
     def get_city(self):
-        return self.__city
+        return self.__city.title()
 
     def set_city(self, value):
         self.__city = value
 
     def get_state(self):
-        return self.__state
+        return self.__state.upper()
 
     def set_state(self, value):
         self.__state = value
@@ -49,13 +49,13 @@ class House:
         self.__zipcode = value
 
     def get_model_name(self):
-        return self.__model_name
+        return self.__model_name.title()
 
     def set_model_name(self, value):
         self.__model_name = value
 
     def get_sale_status(self):
-        return self.__sale_status
+        return self.__sale_status.title()
 
     def set_sale_status(self, value):
         self.__sale_status = value
