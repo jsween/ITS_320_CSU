@@ -44,12 +44,14 @@ class HelperClass:
             raise TypeError(f'Unknown Type: Invalid choice reached perform_user_operation({choice}). Please try again.')
 
     @staticmethod
-    def validate_square_footage_valid(square_footage):
+    def validate_square_footage(square_footage):
         """
         Validates user inputted square footage.
         :param square_footage: User input to validate.
         :return: (bool) True or False if user entered a valid square footage value.
         """
+        if square_footage == '':
+            return False
         try:
             return 0 < int(square_footage) < 200_000
         except ValueError:

@@ -31,6 +31,23 @@ class Inventory:
                 return
         print(f'House ID {id_to_remove} not found. Nothing removed from Inventory.')
 
+    def __update_square_footage(self, index):
+        user_input = input('Enter new square footage in nearest whole number: ').strip()
+        valid = fhc.validate_square_footage(user_input)
+        if valid:
+            self.inventory[index].set_square_feet(int(user_input))
+            print(f'Square footage successfully updated: {self.inventory[index].get_square_feet()}')
+        else:
+            print(f'Invalid square footage entered: {user_input}. Try again.')
+
+    def __update_address(self, index):
+        user_input = input('Enter new address: ').strip().lower()
+        if user_input != '':
+            self.inventory[index].set_address(user_input)
+            print(f'Address successfully updated: {self.inventory[index].get_address()}')
+        else:
+            print(f'Invalid address entered: `{user_input}`. Try again.')
+
     @staticmethod
     def __display_update_house_options__():
         print('Update Menu\nEnter the appropriate key to update the attribute.')
@@ -87,15 +104,9 @@ class Inventory:
                     self.__display_update_house_options__()
                     choice = input('Enter a choice: ').strip().lower()
                     if choice == '1':  # square footage
-                        user_input = input('Enter new square footage in nearest whole number:')
-                        valid = fhc.validate_square_footage_valid(user_input)
-                        if valid:
-                            # house.set_square_footage(int(user_input))
-                            self.inventory[index].set_square_feet(int(user_input))
-                        else:
-                            print(f'Invalid square footage entered: {user_input}. Try again.')
+                        self.__update_square_footage(index)
                     elif choice == '2':  # address
-                        raise NotImplementedError()
+                        self.__update_address(index)
                     elif choice == '3':  # city
                         raise NotImplementedError()
                     elif choice == '4':  # state
