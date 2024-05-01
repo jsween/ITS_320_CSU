@@ -4,13 +4,13 @@ from Inventory import Inventory
 
 
 def display_main_options():
-    print('\nPress the appropriate key for your selection.')
-    print('\t1: Add a new home.')
-    print('\t2: Remove a home.')
-    print('\t3: Update a home.')
-    print('\t4: View all homes.')
-    print('\t5: Save Home Inventory.')
-    print('\tq: Exit program.')
+    print('\nMain Menu\nPress the appropriate key for your selection.')
+    print('\t(1): Add a new home.')
+    print('\t(2): Remove a home.')
+    print('\t(3): Update a home.')
+    print('\t(4): View all homes.')
+    print('\t(5): Save Home Inventory.')
+    print('\t(q): Exit program.\n')
 
 
 def get_user_choice():
@@ -32,17 +32,15 @@ def get_user_choice():
 
 
 def perform_user_operation(choice, home_inventory):
-    if choice == '1':
+    if choice == '1':  # add a new house
         home_inventory.add_new_house()
-    elif choice == '2':
-        print('Removing a home...')
+    elif choice == '2':  # remove a house
         home_inventory.select_house_to_remove_from_inventory()
-    elif choice == '3':
-        print('Updating a home...')
-        raise NotImplementedError()
-    elif choice == '4':
+    elif choice == '3':  # update a house
+        home_inventory.select_house_to_modify()
+    elif choice == '4':  # display all
         home_inventory.display_all_inventory_to_user()
-    elif choice == '5':
+    elif choice == '5':  # save to file
         home_inventory.save_inventory_to_text_file()
     else:
         raise TypeError(f'Unknown Type: Invalid choice reached perform_user_operation({choice}). Please try again.')
