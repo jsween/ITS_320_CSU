@@ -2,11 +2,17 @@ from enum import Enum
 
 
 class FileExtension(Enum):
+    """
+    Supported File Extensions
+    """
     TXT = 'txt'
     CSV = 'csv'
 
 
 class HouseAttribute(Enum):
+    """
+    Supported House Attributes
+    """
     ADDRESS = 'address'
     CITY = 'city'
     MODEL_NAME = 'model name'
@@ -17,6 +23,9 @@ class HouseAttribute(Enum):
 
 
 class SaleStatus(Enum):
+    """
+    Valid Sales Status
+    """
     SOLD = 'sold'
     AVAILABLE = 'available'
     UNDER_CONTRACT = 'under contract'
