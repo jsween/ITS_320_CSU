@@ -5,9 +5,11 @@ from House import House
 
 
 class Inventory:
-    # TODO: Remove dummy house before submission
+    """
+    Class represents an inventory used to track residential homes
+    """
     def __init__(self):
-        self.__inventory = [House(1234, '123 main st', 'portland', 'or', '98768', 'Oak Tree', SaleStatus.AVAILABLE)]  # Class attribute in case multiple types in future (e.g., home, commercial)
+        self.__inventory = []  # Class attribute in case multiple types in future (e.g., home, commercial)
 
     def __str__(self):
         string = '\n******************\nCurrent Inventory:\n******************\n\n'
@@ -22,6 +24,9 @@ class Inventory:
         return self.__inventory
 
     def _perform_update_engine(self, index):
+        """
+        Updates a house's attributes based off the user's selection
+        """
         done = False
         while not done:
             self._display_update_house_options__()
@@ -47,6 +52,11 @@ class Inventory:
             self._update_attribute(index, attribute)
 
     def _update_attribute(self, index, attribute):
+        """
+        Responsible for performing appropriate method to update the attribute.
+        @param index: index of the house to update
+        @param attribute: attribute to update
+        """
         if attribute == HouseAttribute.ADDRESS:
             user_input = self._get_string_house_attribute_from_user('Enter new address: ')
             self.__inventory[index].set_address(user_input)
@@ -72,6 +82,10 @@ class Inventory:
         print(f'{attribute.value.title()} successfully updated.')
 
     def _remove_house_by_id(self, id_to_remove):
+        """
+        Removes a house by its ID.
+        @param id_to_remove: ID of the house to remove
+        """
         for house in self.__inventory:
             if house.id == id_to_remove:
                 self.__inventory.remove(house)
@@ -80,6 +94,9 @@ class Inventory:
         print(f'House ID {id_to_remove} not found. Nothing removed from Inventory.')
 
     def _update_sale_status(self, index):
+        """
+        Updates the sale status of the house.
+        """
         print('Select new status:\n(s): Sold.\n(a): Available.\n(u): Under Contract\n')
         user_input = input('Enter new sale status: ').strip().lower()
         if user_input != '' and user_input in ['s', 'a', 'u']:
@@ -96,6 +113,9 @@ class Inventory:
 
     @staticmethod
     def _display_update_house_options__():
+        """
+        Displays the options available to the user.
+        """
         print('Update Menu\nEnter the appropriate key to update the attribute.')
         print('\t(1): Square Footage.')
         print('\t(2): Address.')
@@ -108,10 +128,22 @@ class Inventory:
 
     @staticmethod
     def _get_extension_format(option):
+        """
+        Converts the given option to an extension format.
+        @param option: user's format choice
+        @return: extension format
+
+        Note: This method exists to support additional formats in the future.
+        """
         return FileExtension.CSV.value if option == 'c' else FileExtension.TXT.value
 
     @staticmethod
     def _get_house_id_from_user(message):
+        """
+        Get the house id from a user.
+        @param message: message to display to the user
+        @return: house id of selected house or -1 if the user wants to cancel the operation
+        """
         valid_input = False
         house_id = None
         while not valid_input:
@@ -130,6 +162,11 @@ class Inventory:
 
     @staticmethod
     def _get_state_from_user(message):
+        """
+        Get the state from the user
+        @param message: message to display to the user
+        @return: valid state
+        """
         valid_input = False
         state = None
         while not valid_input:
@@ -141,6 +178,11 @@ class Inventory:
 
     @staticmethod
     def _get_square_footage_from_user(message):
+        """
+        Get the square footage from the user
+        @param message: message to display to the user
+        @return: square footage
+        """
         valid_input = False
         value = None
         while not valid_input:
@@ -154,6 +196,11 @@ class Inventory:
 
     @staticmethod
     def _get_string_house_attribute_from_user(message):
+        """
+        Get the house attribute from the user
+        @param message: message to display to the user
+        @return: house attribute
+        """
         valid_input = False
         value = None
         while not valid_input:
@@ -166,6 +213,11 @@ class Inventory:
 
     @staticmethod
     def _get_zipcode_from_user(message):
+        """
+        Get the zipcode from the user
+        @param message: message to display to the user
+        @return: valid zipcode
+        """
         valid_input = False
         value = None
         while not valid_input:
@@ -178,6 +230,9 @@ class Inventory:
         return value
 
     def add_new_house(self):
+        """
+        Add a new house to the inventory.
+        """
         print('Adding a new house. Please provide the following information:')
         model_name = self._get_string_house_attribute_from_user('Model Name: ')
         square_feet = self._get_square_footage_from_user('Square feet rounded to nearest foot (e.g., 1200): ')
@@ -191,6 +246,9 @@ class Inventory:
         print(self)
 
     def display_all_inventory_to_user(self):
+        """
+        Displays the inventory to the user.
+        """
         if len(self._get_inventory()) > 0:
             print('Viewing All Home Inventory...')
             print(self)
@@ -198,6 +256,9 @@ class Inventory:
             print('\nWarning: Home Inventory is empty.\n')
 
     def select_house_to_remove_from_inventory(self):
+        """
+        Selects the house to remove from the inventory.
+        """
         if len(self._get_inventory()) > 0:
             print(f'\nCurrent Inventory: \n{self}\n')
             house_id = self._get_house_id_from_user('Enter a house ID to remove: ')
@@ -209,6 +270,9 @@ class Inventory:
             print('\nWarning: Inventory is empty. Unable to remove a house.\n')
 
     def select_house_to_modify(self):
+        """
+        Selects the house to modify.
+        """
         print(f'\nCurrent Inventory: \n{self}\n')
         house_id = self._get_house_id_from_user('Enter a house ID to modify: ')
         if house_id == -1:
@@ -223,6 +287,9 @@ class Inventory:
                 print(f'House not found. Check if ID {house_id} exists in Inventory.')
 
     def save_inventory_to_text_file(self):
+        """
+        Saves the inventory to a text or csv file.
+        """
         extension_choice = input('Press `c` for csv format or any other key for text format: ').strip().lower()
         extension = self._get_extension_format(extension_choice)
 
