@@ -1,4 +1,7 @@
 class House:
+    """
+    Object is a class that represents a house.
+    """
     __next_id = 1
 
     def __init__(self, square_feet, address, city, state, zipcode, model_name, sale_status):
