@@ -171,6 +171,19 @@ class Inventory:
                 valid_input = True
         return value
 
+    @staticmethod
+    def _get_zipcode_from_user(message):
+        valid_input = False
+        value = None
+        while not valid_input:
+            value = input(message).strip()
+            valid_input = fhc.validate_zipcode(value)
+            if not valid_input:
+                print('Please enter a valid zipcode.')
+            else:
+                valid_input = True
+        return value
+
     def add_new_house(self):
         print('Adding a new house. Please provide the following information:')
         model_name = self._get_string_house_attribute_from_user('Model Name: ')
@@ -178,7 +191,7 @@ class Inventory:
         address = self._get_string_house_attribute_from_user('Address: ')
         city = self._get_string_house_attribute_from_user('City: ')
         state = self._get_state_from_user('State (e.g., WA, OR): ')
-        zipcode = input('Zipcode (e.g., 97123): ').strip()  # TODO: add error checking for 5 digit int & convert to int
+        zipcode = self._get_zipcode_from_user('Zipcode (e.g., 97123): ')
         sale_status = SaleStatus.AVAILABLE
         new_house = House(square_feet, address, city, state, zipcode, model_name, sale_status)
         self._add_house_to_inventory(new_house)
