@@ -78,12 +78,9 @@ class Inventory:
             print(f'Invalid input entered: `{user_input}`. Try again.')
 
     def _update_state(self, index):
-        user_input = input('Enter new state: ').strip().lower()
-        if user_input != '':
-            self.__inventory[index].set_state(user_input)
-            print(f'State successfully updated: {self.__inventory[index].get_state()}')
-        else:
-            print(f'Invalid input entered: `{user_input}`. Try again.')
+        user_input = self._get_state_from_user('Enter new state: ')
+        self.__inventory[index].set_state(user_input)
+        print(f'State successfully updated: {self.__inventory[index].get_state()}')
 
     def _update_zipcode(self, index):
         user_input = input('Enter new zipcode: ')
@@ -152,6 +149,17 @@ class Inventory:
         return house_id
 
     @staticmethod
+    def _get_state_from_user(message):
+        valid_input = False
+        state = None
+        while not valid_input:
+            state = input(message).strip().lower()
+            valid_input = fhc.validate_state(state)
+            if not valid_input:
+                print('Please enter a valid state (e.g., OR, WA.')
+        return state
+
+    @staticmethod
     def _get_string_house_attribute_from_user(message):
         valid_input = False
         value = None
@@ -169,7 +177,7 @@ class Inventory:
         square_feet = input('Square feet rounded to nearest foot (e.g., 1200): ').strip()  # TODO: add error checking for uint and range (50?, 500000?) & convert to int
         address = self._get_string_house_attribute_from_user('Address: ')
         city = self._get_string_house_attribute_from_user('City: ')
-        state = input('State: ').strip()  # TODO: 2 letter state abbreviation
+        state = self._get_state_from_user('State (e.g., WA, OR): ')
         zipcode = input('Zipcode (e.g., 97123): ').strip()  # TODO: add error checking for 5 digit int & convert to int
         sale_status = SaleStatus.AVAILABLE
         new_house = House(square_feet, address, city, state, zipcode, model_name, sale_status)

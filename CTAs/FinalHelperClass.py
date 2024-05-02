@@ -1,3 +1,4 @@
+import re
 import sys
 from CustomErrors import TooManyAttemptsError
 
@@ -56,6 +57,22 @@ class HelperClass:
             return 0 < int(square_footage) < 200_000
         except ValueError:
             return False
+
+    @staticmethod
+    def validate_state(state):
+        """
+        Validates the state
+        :param state: (str) The state to validate.
+        :return: (bool) True or False if user entered a valid state value.
+        """
+        us_state_acronyms = [
+            "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+            "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+            "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+            "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+            "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+        ]
+        return state.upper() in us_state_acronyms
 
     @staticmethod
     def validate_zipcode(zipcode):
