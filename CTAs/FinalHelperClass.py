@@ -76,6 +76,11 @@ class HelperClass:
 
     @staticmethod
     def validate_zipcode(zipcode):
+        """
+        Validates the zipcode
+        :param zipcode: (str) The zipcode to validate.
+        :return: (bool) True or False if user entered a valid zipcode value.
+        """
         if len(zipcode) != 5:
             return False
         try:
