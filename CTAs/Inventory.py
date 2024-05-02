@@ -1,5 +1,5 @@
 from CustomErrors import InvalidNegativeNumberError
-from Enums import FileExtension, SaleStatus
+from Enums import HouseAttribute, FileExtension, SaleStatus
 from FinalHelperClass import HelperClass as fhc
 from House import House
 
@@ -21,28 +21,55 @@ class Inventory:
     def _get_inventory(self):
         return self.__inventory
 
-    def _perform_update_action(self, index):
+    def _perform_update_engine(self, index):
         done = False
         while not done:
             self._display_update_house_options__()
             choice = input('Enter a choice: ').strip().lower()
+            attribute = None
             if choice == '1':  # square footage
-                self._update_square_footage(index)
+                attribute = HouseAttribute.SQUARE_FOOTAGE
             elif choice == '2':  # address
-                self._update_address(index)
+                attribute = HouseAttribute.ADDRESS
             elif choice == '3':  # city
-                self._update_city(index)
+                attribute = HouseAttribute.CITY
             elif choice == '4':  # state
-                self._update_state(index)
+                attribute = HouseAttribute.STATE
             elif choice == '5':  # zip
-                self._update_zipcode(index)
+                attribute = HouseAttribute.ZIPCODE
             elif choice == '6':  # model name
-                self._update_model_name(index)
+                attribute = HouseAttribute.MODEL_NAME
             elif choice == '7':  # sale status
-                self._update_sale_status(index)
+                attribute = HouseAttribute.SALE_STATUS
             else:  # quit
                 print('Exiting to main menu...')
                 done = True
+            self._update_attribute(index, attribute)
+
+    def _update_attribute(self, index, attribute):
+        if attribute == HouseAttribute.ADDRESS:
+            user_input = self._get_string_house_attribute_from_user('Enter new address: ')
+            self.__inventory[index].set_address(user_input)
+        elif attribute == HouseAttribute.CITY:
+            user_input = self._get_string_house_attribute_from_user('Enter new city name: ')
+            self.__inventory[index].set_city(user_input)
+        elif attribute == HouseAttribute.MODEL_NAME:
+            user_input = self._get_string_house_attribute_from_user('Enter new model name: ')
+            self.__inventory[index].set_model_name(user_input)
+        elif attribute == HouseAttribute.SALE_STATUS:
+            self._update_sale_status(index)  # additional logic needed
+        elif attribute == HouseAttribute.SQUARE_FOOTAGE:
+            user_input = self._get_square_footage_from_user('Enter new square footage in nearest whole number: ')
+            self.__inventory[index].set_square_feet(user_input)
+        elif attribute == HouseAttribute.STATE:
+            user_input = self._get_state_from_user('Enter new state: ')
+            self.__inventory[index].set_state(user_input)
+        elif attribute == HouseAttribute.ZIPCODE:
+            user_input = self._get_zipcode_from_user('Enter new zipcode: ')
+            self.__inventory[index].set_zipcode(int(user_input))
+        else:
+            raise TypeError('Invalid home attribute used.')
+        print(f'{attribute.value.title()} successfully updated.')
 
     def _remove_house_by_id(self, id_to_remove):
         for house in self.__inventory:
@@ -51,36 +78,6 @@ class Inventory:
                 print(f'House ID {id_to_remove} successfully removed.')
                 return
         print(f'House ID {id_to_remove} not found. Nothing removed from Inventory.')
-
-    def _update_square_footage(self, index):
-        user_input = self._get_square_footage_from_user('Enter new square footage in nearest whole number: ')
-        self.__inventory[index].set_square_feet(int(user_input))
-        print(f'Square footage successfully updated: {self.__inventory[index].get_square_feet()}')
-
-    def _update_address(self, index):
-        user_input = self._get_string_house_attribute_from_user('Enter new address: ')
-        self.__inventory[index].set_address(user_input)
-        print(f'Address successfully updated: {self.__inventory[index].get_address()}')
-
-    def _update_city(self, index):
-        user_input = self._get_string_house_attribute_from_user('Enter new city name: ')
-        self.__inventory[index].set_city(user_input)
-        print(f'City successfully updated: {self.__inventory[index].get_city()}')
-
-    def _update_state(self, index):
-        user_input = self._get_state_from_user('Enter new state: ')
-        self.__inventory[index].set_state(user_input)
-        print(f'State successfully updated: {self.__inventory[index].get_state()}')
-
-    def _update_zipcode(self, index):
-        user_input = self._get_zipcode_from_user('Enter new zipcode: ')
-        self.__inventory[index].set_zipcode(int(user_input))
-        print(f'Zipcode successfully updated: {self.__inventory[index].get_zipcode()}')
-
-    def _update_model_name(self, index):
-        user_input = self._get_string_house_attribute_from_user('Enter new model name: ')
-        self.__inventory[index].set_model_name(user_input)
-        print(f'Model name successfully updated: {self.__inventory[index].get_model_name()}')
 
     def _update_sale_status(self, index):
         print('Select new status:\n(s): Sold.\n(a): Available.\n(u): Under Contract\n')
@@ -221,7 +218,7 @@ class Inventory:
             if house.id == house_id:
                 print(f'House Found. Current Attributes:\n{self}\n')
                 index = self.__inventory.index(house)
-                self._perform_update_action(index)
+                self._perform_update_engine(index)
             else:
                 print(f'House not found. Check if ID {house_id} exists in Inventory.')
 
