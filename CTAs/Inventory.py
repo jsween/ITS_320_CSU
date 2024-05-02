@@ -7,7 +7,7 @@ from House import House
 class Inventory:
 
     def __init__(self):
-        self.__inventory = []  # Keeping as a class attribute in case multiple types in future (e.g., home, commercial)
+        self.__inventory = []  # Class attribute in case multiple types in future (e.g., home, commercial)
 
     def __str__(self):
         string = '\n******************\nCurrent Inventory:\n******************\n\n'
@@ -160,6 +160,19 @@ class Inventory:
         return state
 
     @staticmethod
+    def _get_square_footage_from_user(message):
+        valid_input = False
+        value = None
+        while not valid_input:
+            value = input(message).strip()
+            valid_input = fhc.validate_square_footage(value)
+            if not valid_input:
+                print('Please enter a valid square footage.')
+            else:
+                valid_input = True
+        return value
+
+    @staticmethod
     def _get_string_house_attribute_from_user(message):
         valid_input = False
         value = None
@@ -187,7 +200,7 @@ class Inventory:
     def add_new_house(self):
         print('Adding a new house. Please provide the following information:')
         model_name = self._get_string_house_attribute_from_user('Model Name: ')
-        square_feet = input('Square feet rounded to nearest foot (e.g., 1200): ').strip()  # TODO: add error checking for uint and range (50?, 500000?) & convert to int
+        square_feet = self._get_square_footage_from_user('Square feet rounded to nearest foot (e.g., 1200): ')
         address = self._get_string_house_attribute_from_user('Address: ')
         city = self._get_string_house_attribute_from_user('City: ')
         state = self._get_state_from_user('State (e.g., WA, OR): ')

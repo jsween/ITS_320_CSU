@@ -54,7 +54,7 @@ class HelperClass:
         if square_footage == '':
             return False
         try:
-            return 0 < int(square_footage) < 200_000
+            return 120 <= int(square_footage) < 200_000  # [IRC min req, world biggest house ~ 180k)
         except ValueError:
             return False
 
