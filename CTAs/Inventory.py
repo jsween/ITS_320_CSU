@@ -7,11 +7,11 @@ from House import House
 class Inventory:
 
     def __init__(self):
-        self.__inventory = []  # Class attribute in case multiple types in future (e.g., home, commercial)
+        self.__inventory = [House(1234, '123 main st', 'portland', 'or', '98768', 'Oak Tree', SaleStatus.AVAILABLE)]  # Class attribute in case multiple types in future (e.g., home, commercial)
 
     def __str__(self):
         string = '\n******************\nCurrent Inventory:\n******************\n\n'
-        for house in self.__inventory:
+        for house in self._get_inventory():
             string += str(house) + '\n'
         return string
 
@@ -211,7 +211,7 @@ class Inventory:
         print(self)
 
     def display_all_inventory_to_user(self):
-        if len(self.__inventory) > 0:
+        if len(self._get_inventory()) > 0:
             print('Viewing All Home Inventory...')
             print(self)
         else:
@@ -234,7 +234,7 @@ class Inventory:
         if house_id == -1:
             print('Canceling remove operation. Returning to main menu...')
             return
-        for house in self.__inventory:
+        for house in self._get_inventory():
             if house.id == house_id:
                 print(f'House Found. Current Attributes:\n{self}\n')
                 index = self.__inventory.index(house)
@@ -246,11 +246,11 @@ class Inventory:
         extension_choice = input('Press `c` for csv format or any other key for text format: ').strip().lower()
         extension = self._get_extension_format(extension_choice)
 
-        if len(self.__inventory) > 0:
-            if extension == 'c':
+        if len(self._get_inventory()) > 0:
+            if extension == 'csv':
                 with open(f'HomeInventoryData.{extension}', 'w') as file:
                     data = 'id,square_feet,address,city,state,zipcode,model_name,sale_status\n'
-                    for h in self.__inventory:
+                    for h in self._get_inventory():
                         data += (f'{h.id},{h.get_square_feet()},{h.get_address()},{h.get_city()},{h.get_state()},'
                                  f'{h.get_zipcode()},{h.get_model_name()},{h.get_sale_status()}\n')
                     file.write(data)
