@@ -135,27 +135,41 @@ class Inventory:
 
     @staticmethod
     def _get_house_id_from_user(message):
-        valid_id = False
-        while not valid_id:
+        valid_input = False
+        house_id = None
+        while not valid_input:
             try:
                 house_id_str = input(message).strip().lower()
                 if house_id_str == 'q':
                     return -1  # handle negative number to cancel update
                 else:
                     house_id = int(house_id_str)
-                    return house_id
+                    valid_input = True
             except InvalidNegativeNumberError as e:
                 print(e)
             except ValueError:
                 print('Please enter a valid house ID as a whole number.')
+        return house_id
+
+    @staticmethod
+    def _get_string_house_attribute_from_user(message):
+        valid_input = False
+        value = None
+        while not valid_input:
+            value = input(message).strip().lower()
+            if value == '':
+                print('Please enter a value for house attribute.')
+            else:
+                valid_input = True
+        return value
 
     def add_new_house(self):
         print('Adding a new house. Please provide the following information:')
-        model_name = input('Model Name: ').strip()  # TODO: for all strings, add method to check if empty
+        model_name = self._get_string_house_attribute_from_user('Model Name: ')
         square_feet = input('Square feet rounded to nearest foot (e.g., 1200): ').strip()  # TODO: add error checking for uint and range (50?, 500000?) & convert to int
-        address = input('Street Address: ').strip()
-        city = input('City: ').strip()
-        state = input('State: ').strip()
+        address = self._get_string_house_attribute_from_user('Address: ')
+        city = self._get_string_house_attribute_from_user('City: ')
+        state = input('State: ').strip()  # TODO: 2 letter state abbreviation
         zipcode = input('Zipcode (e.g., 97123): ').strip()  # TODO: add error checking for 5 digit int & convert to int
         sale_status = SaleStatus.AVAILABLE
         new_house = House(square_feet, address, city, state, zipcode, model_name, sale_status)
