@@ -20,6 +20,29 @@ class Inventory:
     def _get_inventory(self):
         return self.__inventory
 
+    def _perform_update_action(self, index):
+        done = False
+        while not done:
+            self._display_update_house_options__()
+            choice = input('Enter a choice: ').strip().lower()
+            if choice == '1':  # square footage
+                self._update_square_footage(index)
+            elif choice == '2':  # address
+                self._update_address(index)
+            elif choice == '3':  # city
+                self._update_city(index)
+            elif choice == '4':  # state
+                self._update_state(index)
+            elif choice == '5':  # zip
+                self._update_zipcode(index)
+            elif choice == '6':  # model name
+                self._update_model_name(index)
+            elif choice == '7':  # sale status
+                self._update_sale_status(index)
+            else:  # quit
+                print('Exiting to main menu...')
+                done = True
+
     def _remove_house_by_id(self, id_to_remove):
         for house in self.__inventory:
             if house.id == id_to_remove:
@@ -144,27 +167,7 @@ class Inventory:
             if house.id == house_id:
                 print(f'House Found. Current Attributes:\n{self}\n')
                 index = self.__inventory.index(house)
-                done = False
-                while not done:
-                    self._display_update_house_options__()
-                    choice = input('Enter a choice: ').strip().lower()
-                    if choice == '1':  # square footage
-                        self._update_square_footage(index)
-                    elif choice == '2':  # address
-                        self._update_address(index)
-                    elif choice == '3':  # city
-                        self._update_city(index)
-                    elif choice == '4':  # state
-                        self._update_state(index)
-                    elif choice == '5':  # zip
-                        self._update_zipcode(index)
-                    elif choice == '6':  # model name
-                        self._update_model_name(index)
-                    elif choice == '7':  # sale status
-                        self._update_sale_status(index)
-                    else:  # quit
-                        print('Exiting to main menu...')
-                        done = True
+                self._perform_update_action(index)
             else:
                 print(f'House not found. Check if ID {house_id} exists in Inventory.')
 
