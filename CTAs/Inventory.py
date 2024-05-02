@@ -5,7 +5,7 @@ from House import House
 
 
 class Inventory:
-
+    # TODO: Remove dummy house before submission
     def __init__(self):
         self.__inventory = [House(1234, '123 main st', 'portland', 'or', '98768', 'Oak Tree', SaleStatus.AVAILABLE)]  # Class attribute in case multiple types in future (e.g., home, commercial)
 
@@ -53,29 +53,19 @@ class Inventory:
         print(f'House ID {id_to_remove} not found. Nothing removed from Inventory.')
 
     def _update_square_footage(self, index):
-        user_input = input('Enter new square footage in nearest whole number: ').strip()
-        valid = fhc.validate_square_footage(user_input)
-        if valid:
-            self.__inventory[index].set_square_feet(int(user_input))
-            print(f'Square footage successfully updated: {self.__inventory[index].get_square_feet()}')
-        else:
-            print(f'Invalid square footage entered: {user_input}. Try again.')
+        user_input = self._get_square_footage_from_user('Enter new square footage in nearest whole number: ')
+        self.__inventory[index].set_square_feet(int(user_input))
+        print(f'Square footage successfully updated: {self.__inventory[index].get_square_feet()}')
 
     def _update_address(self, index):
-        user_input = input('Enter new address: ').strip().lower()
-        if user_input != '':
-            self.__inventory[index].set_address(user_input)
-            print(f'Address successfully updated: {self.__inventory[index].get_address()}')
-        else:
-            print(f'Invalid input entered: `{user_input}`. Try again.')
+        user_input = self._get_string_house_attribute_from_user('Enter new address: ')
+        self.__inventory[index].set_address(user_input)
+        print(f'Address successfully updated: {self.__inventory[index].get_address()}')
 
     def _update_city(self, index):
-        user_input = input('Enter new city: ').strip().lower()
-        if user_input != '':
-            self.__inventory[index].set_city(user_input)
-            print(f'City successfully updated: {self.__inventory[index].get_city()}')
-        else:
-            print(f'Invalid input entered: `{user_input}`. Try again.')
+        user_input = self._get_string_house_attribute_from_user('Enter new city name: ')
+        self.__inventory[index].set_city(user_input)
+        print(f'City successfully updated: {self.__inventory[index].get_city()}')
 
     def _update_state(self, index):
         user_input = self._get_state_from_user('Enter new state: ')
@@ -83,26 +73,19 @@ class Inventory:
         print(f'State successfully updated: {self.__inventory[index].get_state()}')
 
     def _update_zipcode(self, index):
-        user_input = input('Enter new zipcode: ')
-        if fhc.validate_zipcode(user_input):
-            self.__inventory[index].set_zipcode(int(user_input))
-            print(f'Zipcode successfully updated: {self.__inventory[index].get_zipcode()}')
-        else:
-            print(f'Invalid zipcode entered: `{user_input}`. Try again.')
+        user_input = self._get_zipcode_from_user('Enter new zipcode: ')
+        self.__inventory[index].set_zipcode(int(user_input))
+        print(f'Zipcode successfully updated: {self.__inventory[index].get_zipcode()}')
 
     def _update_model_name(self, index):
-        user_input = input('Enter new model name: ').strip().lower()
-        if user_input != '':
-            self.__inventory[index].set_model_name(user_input)
-            print(f'Model name successfully updated: {self.__inventory[index].get_model_name()}')
-        else:
-            print(f'Invalid input entered: `{user_input}`. Try again.')
+        user_input = self._get_string_house_attribute_from_user('Enter new model name: ')
+        self.__inventory[index].set_model_name(user_input)
+        print(f'Model name successfully updated: {self.__inventory[index].get_model_name()}')
 
     def _update_sale_status(self, index):
         print('Select new status:\n(s): Sold.\n(a): Available.\n(u): Under Contract\n')
         user_input = input('Enter new sale status: ').strip().lower()
         if user_input != '' and user_input in ['s', 'a', 'u']:
-            new_status = None
             if user_input == 's':
                 new_status = SaleStatus.SOLD
             elif user_input == 'a':
@@ -218,7 +201,7 @@ class Inventory:
             print('\nWarning: Home Inventory is empty.\n')
 
     def select_house_to_remove_from_inventory(self):
-        if len(self.__inventory) > 0:
+        if len(self._get_inventory()) > 0:
             print(f'\nCurrent Inventory: \n{self}\n')
             house_id = self._get_house_id_from_user('Enter a house ID to remove: ')
             if house_id == -1:
