@@ -1,3 +1,4 @@
+from CustomErrors import InvalidNegativeNumberError
 from Enums import FileExtension, SaleStatus
 from FinalHelperClass import HelperClass as fhc
 from House import House
@@ -132,6 +133,22 @@ class Inventory:
     def _get_extension_format(option):
         return FileExtension.CSV.value if option == 'c' else FileExtension.TXT.value
 
+    @staticmethod
+    def _get_house_id_from_user(message):
+        valid_id = False
+        while not valid_id:
+            try:
+                house_id_str = input(message).strip().lower()
+                if house_id_str == 'q':
+                    return -1  # handle negative number to cancel update
+                else:
+                    house_id = int(house_id_str)
+                    return house_id
+            except InvalidNegativeNumberError as e:
+                print(e)
+            except ValueError:
+                print('Please enter a valid house ID as a whole number.')
+
     def add_new_house(self):
         print('Adding a new house. Please provide the following information:')
         model_name = input('Model Name: ').strip()  # TODO: for all strings, add method to check if empty
@@ -155,14 +172,20 @@ class Inventory:
     def select_house_to_remove_from_inventory(self):
         if len(self.__inventory) > 0:
             print(f'\nCurrent Inventory: \n{self}\n')
-            house_id = int(input('Enter a house ID to remove: '))  # TODO: add check if 'c' to cancel or if int
+            house_id = self._get_house_id_from_user('Enter a house ID to remove: ')
+            if house_id == -1:
+                print('Canceling remove operation. Returning to main menu...')
+                return
             self._remove_house_by_id(house_id)
         else:
             print('\nWarning: Inventory is empty. Unable to remove a house.\n')
 
     def select_house_to_modify(self):
         print(f'\nCurrent Inventory: \n{self}\n')
-        house_id = int(input('Enter a house ID to modify: '))  # TODO: add check if 'c' to cancel or if int
+        house_id = self._get_house_id_from_user('Enter a house ID to modify: ')
+        if house_id == -1:
+            print('Canceling remove operation. Returning to main menu...')
+            return
         for house in self.__inventory:
             if house.id == house_id:
                 print(f'House Found. Current Attributes:\n{self}\n')
