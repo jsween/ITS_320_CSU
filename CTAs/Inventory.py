@@ -111,6 +111,14 @@ class Inventory:
         else:
             print(f'Invalid input entered: `{user_input}`. Try again.')
 
+    def _write_to_file_in_csv_format(self, extension):
+        with open(f'HomeInventoryData.{extension}', 'w') as file:
+            data = 'id,square_feet,address,city,state,zipcode,model_name,sale_status\n'
+            for h in self._get_inventory():
+                data += (f'{h.id},{h.get_square_feet()},{h.get_address()},{h.get_city()},{h.get_state()},'
+                         f'{h.get_zipcode()},{h.get_model_name()},{h.get_sale_status()}\n')
+            file.write(data)
+
     @staticmethod
     def _display_update_house_options__():
         """
@@ -294,19 +302,26 @@ class Inventory:
         extension = self._get_extension_format(extension_choice)
 
         if len(self._get_inventory()) > 0:
-            if extension == 'csv':
-                with open(f'HomeInventoryData.{extension}', 'w') as file:
-                    data = 'id,square_feet,address,city,state,zipcode,model_name,sale_status\n'
-                    for h in self._get_inventory():
-                        data += (f'{h.id},{h.get_square_feet()},{h.get_address()},{h.get_city()},{h.get_state()},'
-                                 f'{h.get_zipcode()},{h.get_model_name()},{h.get_sale_status()}\n')
-                    file.write(data)
-            else:
-                with open(f'HomeInventoryData.{extension}', 'w') as file:
-                    file.write(str(self))
+            self.write_inventory_to_text_file(extension)
             print(f'Inventory saved to HomeInventoryData.{extension} in {extension.upper()} format.')
         else:
             print('Warning: There is no data to save. Add houses to inventory and try again.')
+
+    def write_inventory_to_text_file(self, extension):
+        try:
+            if extension == 'csv':
+                self._write_to_file_in_csv_format(extension)
+            else:
+                with open(f'HomeInventoryData.{extension}', 'w') as file:
+                    file.write(str(self))
+        except PermissionError as e:
+            print(f'Permission denied: File is read-only. {e}')
+        except TypeError as e:
+            print(e)
+        except IOError as e:
+            print(e)
+        except UnicodeError as e:
+            print(e)
 
 
 
